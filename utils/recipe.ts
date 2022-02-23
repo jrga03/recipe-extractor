@@ -283,12 +283,13 @@ export function extractRecipeInitialValues(
     name?: string;
     description?: string;
     recipeInstructions?: string | Array<{ text: string }>;
+    recipeIngredient?: Array<string>;
   } = {}
 ) {
   return {
     title: recipe.name || "",
     description: recipe.description || "",
-    // ingredients: parseIngredients(recipe.recipeIngredient),
+    ingredients: parseIngredients(recipe.recipeIngredient),
     // "prep-notes": [],
     directions: generateInstructionsString(recipe.recipeInstructions)
   };

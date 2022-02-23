@@ -11,10 +11,18 @@ type Error = {
   statusText: string;
 };
 
+type Ingredient = {
+  amount: string;
+  ingredient: string;
+  note: string;
+  unit: string;
+};
+
 type Data = {
   title: string;
   description: string;
   directions: string;
+  ingredients: Ingredient[];
 };
 
 type Timeout = ReturnType<typeof setTimeout>;
@@ -63,7 +71,8 @@ const Home: NextPage = () => {
   const [data, setData] = useState<Data>({
     title: "",
     description: "",
-    directions: ""
+    directions: "",
+    ingredients: []
   });
 
   const onSubmit: FormEventHandler = async (event) => {
@@ -145,9 +154,25 @@ const Home: NextPage = () => {
             <TextCopy title="Recipe" text={data.title} />
             <TextCopy title="Description" text={data.description} />
             <TextCopy title="Directions" text={data.directions} />
+            <TextCopy
+              title="Ingredients"
+              text={data.ingredients
+                .reduce((acc, cur) => {
+                  const text = `${cur.amount} ${cur.unit} ${cur.ingredient}${
+                    cur.note ? ` (${cur.note})` : ""
+                  }`;
+                  if (acc === "") {
+                    return `- ${text}`;
+                  }
+
+                  return `${acc}\n- ${text}`;
+                }, "")
+                .split(" ")
+                .filter(Boolean)
+                .join(" ")}
+            />
           </div>
         )}
-
       </div>
     </div>
   );
